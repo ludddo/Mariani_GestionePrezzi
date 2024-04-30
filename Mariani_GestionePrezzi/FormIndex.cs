@@ -11,9 +11,9 @@ using System.IO;
 
 namespace Mariani_GestionePrezzi
 {
-    public partial class Form1 : Form
+    public partial class Index : Form
     {
-        public Form1()
+        public Index()
         {
             InitializeComponent();
         }
@@ -33,10 +33,10 @@ namespace Mariani_GestionePrezzi
             recipeManager.AddRecipe(newRecipe);
 
             // Rimozione di una ricetta
-            /*if (recipeManager.Recipes.Count > 0)
+            if (recipeManager.Recipes.Count > 0)
             {
                 recipeManager.RemoveRecipe(recipeManager.Recipes[0]);
-            }*/
+            }
 
             // Salvataggio delle ricette aggiornate su file
             recipeManager.SaveRecipesToFile(filePath);
