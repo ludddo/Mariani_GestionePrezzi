@@ -6,8 +6,59 @@ using System.Windows.Forms;
 
 public class Ingredient<T>
 {
+    [JsonProperty("nome")]
     public string Name { get; set; }
+
+    [JsonProperty("quantita")]
     public T Quantity { get; set; }
+
+    [JsonProperty("prezzo")]
+    public decimal Prezzo { get; set; }
+
+    
+    public Ingredient() { }
+
+    // Costruttore per inizializzare l'oggetto Ingrediente con i valori desiderati
+    public Ingredient(string nome, T quantita, decimal prezzo)
+    {
+        Name = nome;
+        Quantity = quantita;
+        Prezzo = prezzo;
+    }
+
+    // Metodo per serializzare l'oggetto in formato JSON
+    public void SerializzaInJSON(string percorsoFile)
+    {
+        List<Ingredient<T>> listaIngredienti;
+
+        // Se il file JSON esiste, leggi il contenuto e deserializzalo
+        if (File.Exists(percorsoFile))
+        {
+            string json = File.ReadAllText(percorsoFile);
+            listaIngredienti = JsonConvert.DeserializeObject<List<Ingredient<T>>>(json);
+        }
+        else
+        {
+            listaIngredienti = new List<Ingredient<T>>();
+        }
+
+        // Aggiungi il nuovo ingrediente alla lista
+        listaIngredienti.Add(this);
+
+        // Serializza la lista degli ingredienti in formato JSON indentato
+        string jsonIndentato = JsonConvert.SerializeObject(listaIngredienti, Formatting.Indented);
+
+        // Scrivi il JSON indentato nel file
+        File.WriteAllText(percorsoFile, jsonIndentato);
+    }
+
+    // Metodo statico per deserializzare un'istanza di Ingrediente da una stringa JSON
+    public static Ingredient<T> DeserializzaDaJSON(string percorsoFile)
+    {
+        string json = File.ReadAllText(percorsoFile);
+        return JsonConvert.DeserializeObject<Ingredient<T>>(json);
+    }
+
 }
 
 public class Recipe<T>
@@ -21,9 +72,9 @@ public class Recipe<T>
         Ingredients = new List<Ingredient<T>>();
     }
 
-    public void AddIngredient(string name, T quantity)
+    public void AddIngredient(string name, T quantity, decimal prezzo)
     {
-        Ingredients.Add(new Ingredient<T> { Name = name, Quantity = quantity });
+        Ingredients.Add(new Ingredient<T> { Name = name, Quantity = quantity, Prezzo = prezzo});
     }
 
     public override string ToString()

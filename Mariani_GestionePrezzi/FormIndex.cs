@@ -11,9 +11,10 @@ using System.IO;
 
 namespace Mariani_GestionePrezzi
 {
-    public partial class Index : Form
+    public partial class FormIndex : Form
     {
-        public Index()
+        
+        public FormIndex()
         {
             InitializeComponent();
         }
@@ -27,9 +28,9 @@ namespace Mariani_GestionePrezzi
             recipeManager.LoadRecipesFromFile(filePath);
 
             // Aggiunta di una nuova ricetta
-            Recipe<string> newRecipe = new Recipe<string>("Nuova Sasd");
-            newRecipe.AddIngredient("Ingrediente 1", "Quantità 1");
-            newRecipe.AddIngredient("Ingrediente 2", "Quantità 2");
+            Recipe<string> newRecipe = new Recipe<string>("Nuova Ricetta");
+            newRecipe.AddIngredient("Ingrediente 1", "Quantità 1", 10);
+            newRecipe.AddIngredient("Ingrediente 2", "Quantità 2", 20);
             recipeManager.AddRecipe(newRecipe);
 
             // Rimozione di una ricetta
@@ -42,7 +43,14 @@ namespace Mariani_GestionePrezzi
             recipeManager.SaveRecipesToFile(filePath);
 
             // Visualizzazione di tutte le ricette
-            recipeManager.DisplayAllRecipes();
+            //recipeManager.DisplayAllRecipes();
+        }
+
+        private void button1_Click(object sender, EventArgs e)
+        {
+            FormAggiuntaMagazzino nuovoForm = new FormAggiuntaMagazzino();
+
+            nuovoForm.Show();
         }
     }
 }
