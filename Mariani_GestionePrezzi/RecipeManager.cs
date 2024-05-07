@@ -26,6 +26,27 @@ public class Ingredient<T>
         Prezzo = prezzo;
     }
 
+    public static void RimuoviDaJSON(string percorsoFile, string nomeIngrediente)
+    {
+        List<Ingredient<T>> listaIngredienti;
+
+        if (File.Exists(percorsoFile))
+        {
+            string json = File.ReadAllText(percorsoFile);
+            listaIngredienti = JsonConvert.DeserializeObject<List<Ingredient<T>>>(json);
+
+            listaIngredienti.RemoveAll(i => i.Name == nomeIngrediente);
+
+            string jsonIndentato = JsonConvert.SerializeObject(listaIngredienti, Formatting.Indented);
+            File.WriteAllText(percorsoFile, jsonIndentato);
+        }
+        else
+        {
+            Console.WriteLine("Il file JSON non esiste. Impossibile rimuovere l'ingrediente.");
+        }
+    }
+
+
     // Metodo per serializzare l'oggetto in formato JSON
     public void SerializzaInJSON(string percorsoFile)
     {
@@ -53,12 +74,11 @@ public class Ingredient<T>
     }
 
     // Metodo statico per deserializzare un'istanza di Ingrediente da una stringa JSON
-    public static Ingredient<T> DeserializzaDaJSON(string percorsoFile)
+    public static List<Ingredient<T>> DeserializzaDaJSON(string percorsoFile)
     {
         string json = File.ReadAllText(percorsoFile);
-        return JsonConvert.DeserializeObject<Ingredient<T>>(json);
+        return JsonConvert.DeserializeObject<List<Ingredient<T>>>(json);
     }
-
 }
 
 public class Recipe<T>
@@ -106,7 +126,7 @@ public class RecipeManager<T>
     {
         string json = JsonConvert.SerializeObject(Recipes, Formatting.Indented);
         File.WriteAllText(filePath, json);
-        MessageBox.Show($"\nRicette salvate su '{filePath}'.");
+       // MessageBox.Show($"\nRicette salvate su '{filePath}'.");
     }
 
     public void LoadRecipesFromFile(string filePath)
@@ -115,7 +135,7 @@ public class RecipeManager<T>
         {
             string json = File.ReadAllText(filePath);
             Recipes = JsonConvert.DeserializeObject<List<Recipe<T>>>(json);
-            MessageBox.Show($"\nRicette caricate da '{filePath}'.");
+            //MessageBox.Show($"\nRicette caricate da '{filePath}'.");
         }
         else
         {
