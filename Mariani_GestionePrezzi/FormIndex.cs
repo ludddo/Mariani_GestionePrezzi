@@ -52,5 +52,12 @@ namespace Mariani_GestionePrezzi
 
             nuovoForm.Show();
         }
+
+        private void button3_Click(object sender, EventArgs e)
+        {
+            FormMenu nuovoForm = new FormMenu();
+
+            nuovoForm.Show();
+        }
     }
 }

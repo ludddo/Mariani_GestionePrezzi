@@ -14,7 +14,7 @@ namespace Mariani_GestionePrezzi
 {
     public partial class FormMenu : Form
     {
-        private Menu menu;
+        private GestioneMenu.Menu menu;
         private List<Ingredient<string>> listaIngredienti;
 
         public FormMenu()
@@ -25,14 +25,14 @@ namespace Mariani_GestionePrezzi
         private void FormMenu_Load(object sender, EventArgs e)
         {
             // Carica il menu e la lista degli ingredienti dal file JSON
-            menu = Menu.LoadFromFile("menu.json");
-            listaIngredienti = Ingredient<string>.DeserializzaDaJSON("ingredienti.json");
+            menu = GestioneMenu.Menu.LoadFromFile("menu.json");
+            listaIngredienti = Ingredient<string>.DeserializzaDaJSON("magazzino.json");
 
             // Popola la DataGridView con la lista degli ingredienti
-            dataGridViewIngredienti.Rows.Clear();
+            dataGridView1.Rows.Clear();
             foreach (var ingrediente in listaIngredienti)
             {
-                dataGridViewIngredienti.Rows.Add(ingrediente.Name, ingrediente.Quantity, ingrediente.Prezzo);
+                dataGridView1.Rows.Add(ingrediente.Name, ingrediente.Quantity, ingrediente.Prezzo);
             }
         }
 
@@ -40,11 +40,11 @@ namespace Mariani_GestionePrezzi
         {
             // Crea un nuovo prodotto
             Product nuovoProdotto = new Product();
-            nuovoProdotto.Name = textBoxNomeProdotto.Text;
-            nuovoProdotto.Price = decimal.Parse(textBoxPrezzoProdotto.Text);
+            nuovoProdotto.Name = textBox1.Text;
+            nuovoProdotto.Price = decimal.Parse(textBox2.Text);
 
             // Aggiungi gli ingredienti selezionati alla lista degli ingredienti del nuovo prodotto
-            foreach (DataGridViewRow riga in dataGridViewIngredienti.SelectedRows)
+            foreach (DataGridViewRow riga in dataGridView1.SelectedRows)
             {
                 string nomeIngrediente = riga.Cells[0].Value.ToString();
                 int quantita = int.Parse(riga.Cells[1].Value.ToString());
@@ -66,10 +66,10 @@ namespace Mariani_GestionePrezzi
             menu.SaveToFile("menu.json");
 
             // Aggiorna la DataGridView dei prodotti nel form principale
-            (Owner as FormPrincipale).CaricaProdotti();
+            //(Owner as FormPrincipale).CaricaProdotti();
 
             // Chiudi il form corrente
-            Close();
+            //Close();
         }
     }
 }
