@@ -24,39 +24,47 @@ namespace Mariani_GestionePrezzi
 
         private void FormMenu_Load(object sender, EventArgs e)
         {
-            // Carica il menu e la lista degli ingredienti dal file JSON
-            menu = GestioneMenu.Menu.LoadFromFile("menu.json");
+            menu = new GestioneMenu.Menu();
             listaIngredienti = Ingredient<string>.DeserializzaDaJSON("magazzino.json");
 
-            // Popola la DataGridView con la lista degli ingredienti
-            dataGridView1.Rows.Clear();
+
+            // Popola il ComboBox con gli ingredienti disponibili
             foreach (var ingrediente in listaIngredienti)
             {
-                dataGridView1.Rows.Add(ingrediente.Name, ingrediente.Quantity, ingrediente.Prezzo);
+                comboBox1.Items.Add(ingrediente.Name);
             }
+
+            // Imposta la DataGridView per le selezioni degli ingredienti
+            dataGridView1.Columns.Add("Ingrediente", "Ingrediente");
+            dataGridView1.Columns.Add("Quantita", "Quantità");
         }
 
-        private void buttonAggiungiProdotto_Click(object sender, EventArgs e)
+        private void button1_Click(object sender, EventArgs e)
         {
-            // Crea un nuovo prodotto
             Product nuovoProdotto = new Product();
             nuovoProdotto.Name = textBox1.Text;
             nuovoProdotto.Price = decimal.Parse(textBox2.Text);
 
-            // Aggiungi gli ingredienti selezionati alla lista degli ingredienti del nuovo prodotto
-            foreach (DataGridViewRow riga in dataGridView1.SelectedRows)
+
+            // Aggiungi gli ingredienti selezionati con le rispettive quantità al nuovo prodotto
+            foreach (DataGridViewRow riga in dataGridView1.Rows)
             {
-                string nomeIngrediente = riga.Cells[0].Value.ToString();
-                int quantita = int.Parse(riga.Cells[1].Value.ToString());
-                decimal prezzo = decimal.Parse(riga.Cells[2].Value.ToString());
-
-                ProductIngredient ingredient = new ProductIngredient
+                if (!riga.IsNewRow)
                 {
-                    IngredientName = nomeIngrediente,
-                    Quantity = quantita
-                };
+                    string nomeIngrediente = riga.Cells["Ingrediente"].Value.ToString();
+                    int quantita = Convert.ToInt32(riga.Cells["Quantita"].Value);
 
-                nuovoProdotto.Ingredients.Add(ingredient);
+                    if (quantita > 0)
+                    {
+                        ProductIngredient ingredient = new ProductIngredient
+                        {
+                            IngredientName = nomeIngrediente,
+                            Quantity = quantita
+                        };
+
+                        nuovoProdotto.Ingredients.Add(ingredient);
+                    }
+                }
             }
 
             // Aggiungi il nuovo prodotto al menu
@@ -70,6 +78,18 @@ namespace Mariani_GestionePrezzi
 
             // Chiudi il form corrente
             //Close();
+        }
+
+        private void button2_Click(object sender, EventArgs e)
+        {
+            // Aggiungi l'ingrediente selezionato con la quantità alla DataGridView
+            string nomeIngrediente = comboBox1.SelectedItem.ToString();
+            int quantita = Convert.ToInt32(textBox2.Text);
+
+            if (quantita > 0)   
+            {
+                dataGridView1.Rows.Add(nomeIngrediente, quantita);
+            }
         }
     }
 }

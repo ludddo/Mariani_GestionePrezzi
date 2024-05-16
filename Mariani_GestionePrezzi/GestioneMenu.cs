@@ -53,6 +53,8 @@ namespace Mariani_GestionePrezzi
                 if (!File.Exists(filePath))
                 {
                     throw new FileNotFoundException("Il file specificato non esiste.", filePath);
+                    //crea il file menu.json vuoto
+
                 }
 
                 string json = File.ReadAllText(filePath);
