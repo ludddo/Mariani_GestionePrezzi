@@ -53,6 +53,13 @@ namespace Mariani_GestionePrezzi
             nuovoForm.Show();
         }
 
+        private void button2_Click(object sender, EventArgs e)
+        {
+            FormCalcoloPrezzo nuovoForm = new FormCalcoloPrezzo();
+
+            nuovoForm.Show();
+        }
+
         private void button3_Click(object sender, EventArgs e)
         {
             FormMenu nuovoForm = new FormMenu();

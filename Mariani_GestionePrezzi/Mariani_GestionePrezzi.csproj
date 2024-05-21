@@ -55,6 +55,12 @@
     <Compile Include="FormAggiuntaMagazzino.Designer.cs">
       <DependentUpon>FormAggiuntaMagazzino.cs</DependentUpon>
     </Compile>
+    <Compile Include="FormCalcoloPrezzo.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FormCalcoloPrezzo.Designer.cs">
+      <DependentUpon>FormCalcoloPrezzo.cs</DependentUpon>
+    </Compile>
     <Compile Include="FormIndex.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -79,6 +85,9 @@
     <Compile Include="RecipeManager.cs" />
     <EmbeddedResource Include="FormAggiuntaMagazzino.resx">
       <DependentUpon>FormAggiuntaMagazzino.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FormCalcoloPrezzo.resx">
+      <DependentUpon>FormCalcoloPrezzo.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="FormIndex.resx">
       <DependentUpon>FormIndex.cs</DependentUpon>
