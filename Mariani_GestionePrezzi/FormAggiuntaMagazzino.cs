@@ -1,11 +1,7 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using System.IO;
 using System.Windows.Forms;
 
 namespace Mariani_GestionePrezzi
@@ -32,14 +28,20 @@ namespace Mariani_GestionePrezzi
         private void CaricaIngredienti()
         {
             // Leggi gli ingredienti dal file JSON
-            var ingredienti = Ingredient<string>.DeserializzaDaJSON(filePath);
+            var ingredienti = DeserializzaDaJSON(filePath);
 
             // Popola la DataGridView con gli ingredienti
             dataGridView1.Rows.Clear();
             foreach (var ingrediente in ingredienti)
             {
-                dataGridView1.Rows.Add(ingrediente.Name, ingrediente.Quantity, ingrediente.Prezzo);
+                dataGridView1.Rows.Add(ingrediente.Name, ingrediente.Quantity, ingrediente.Price);
             }
+        }
+
+        private List<Ingredient> DeserializzaDaJSON(string filePath)
+        {
+            string json = File.ReadAllText(filePath);
+            return JsonConvert.DeserializeObject<List<Ingredient>>(json);
         }
 
         private void button1_Click(object sender, EventArgs e)
@@ -74,8 +76,6 @@ namespace Mariani_GestionePrezzi
                 // Aggiorna la visualizzazione degli ingredienti
                 CaricaIngredienti();
             }
-
-            
         }
     }
 }

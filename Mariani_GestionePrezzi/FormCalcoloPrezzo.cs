@@ -1,22 +1,16 @@
 ﻿using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Forms;
 using System.IO;
+using System.Linq;
+using System.Windows.Forms;
 
 namespace Mariani_GestionePrezzi
 {
     public partial class FormCalcoloPrezzo : Form
     {
-
-        private GestioneMenu.Menu menu;
-        private List<Ingredient<string>> listaIngredienti;
+        private MyMenu menu;
+        private List<Ingredient> listaIngredienti;
 
         public FormCalcoloPrezzo()
         {
@@ -28,18 +22,21 @@ namespace Mariani_GestionePrezzi
         {
             // Carica la lista degli ingredienti dal file JSON
             string json = File.ReadAllText("magazzino.json");
-            listaIngredienti = JsonConvert.DeserializeObject<List<Ingredient<string>>>(json);
+            listaIngredienti = JsonConvert.DeserializeObject<List<Ingredient>>(json);
         }
 
         private void FormCalcoloPrezzo_Load(object sender, EventArgs e)
         {
             // Carica il menu dal file JSON
-            menu = GestioneMenu.Menu.LoadFromFile("menu.json");
+            menu = MyMenu.LoadFromFile("menu.json");
 
             // Popola il ComboBox con i nomi dei prodotti disponibili
-            foreach (var prodotto in menu.Products)
+            foreach (var recipe in menu.Recipes)
             {
-                comboBoxProdotti.Items.Add(prodotto.Name);
+                foreach (var product in recipe.Products)
+                {
+                    comboBoxProdotti.Items.Add(product.Name);
+                }
             }
         }
 
@@ -76,7 +73,15 @@ namespace Mariani_GestionePrezzi
 
             // Trova il prodotto selezionato
             string nomeProdotto = comboBoxProdotti.SelectedItem.ToString();
-            var prodotto = menu.Products.FirstOrDefault(p => p.Name == nomeProdotto);
+            Product prodotto = null;
+            foreach (var recipe in menu.Recipes)
+            {
+                prodotto = recipe.Products.FirstOrDefault(p => p.Name == nomeProdotto);
+                if (prodotto != null)
+                {
+                    break;
+                }
+            }
 
             if (prodotto == null)
             {
@@ -88,11 +93,11 @@ namespace Mariani_GestionePrezzi
             decimal costoTotale = 0;
             foreach (var ingrediente in prodotto.Ingredients)
             {
-                var ingredientInfo = listaIngredienti.FirstOrDefault(i => i.Name == ingrediente.IngredientName);
+                var ingredientInfo = listaIngredienti.FirstOrDefault(i => i.Name == ingrediente.Name);
                 if (ingredientInfo != null)
                 {
                     // Calcola il costo proporzionale dell'ingrediente
-                    decimal costoIngrediente = ingredientInfo.Prezzo * (ingrediente.Quantity / decimal.Parse(ingredientInfo.Quantity));
+                    decimal costoIngrediente = ingredientInfo.Price * (ingrediente.Quantity / (decimal)ingredientInfo.Quantity);
 
                     costoTotale += costoIngrediente;
                 }
@@ -103,30 +108,9 @@ namespace Mariani_GestionePrezzi
             labelPrezzoFinale.Text = $"Prezzo finale: {prezzoFinale:C}";
         }
 
-
         private void button1_Click(object sender, EventArgs e)
         {
-            // Verifica che il prezzo finale sia stato calcolato
-            if (string.IsNullOrWhiteSpace(labelPrezzoFinale.Text))
-            {
-                MessageBox.Show("Devi prima calcolare il prezzo finale del prodotto.");
-                return;
-            }
 
-            // Crea un nuovo oggetto per il prodotto con il prezzo finale
-            ProdottoConPrezzoFinale prodottoConPrezzoFinale = new ProdottoConPrezzoFinale
-            {
-                Nome = comboBoxProdotti.SelectedItem.ToString(),
-                PrezzoFinale = decimal.Parse(labelPrezzoFinale.Text.Replace("Prezzo finale: ", "").Replace("€", ""))
-            };
-
-            // Serializza il prodotto con il prezzo finale in formato JSON
-            string json = JsonConvert.SerializeObject(prodottoConPrezzoFinale, Formatting.Indented);
-
-            // Salva il JSON in un file
-            File.WriteAllText("prodotto_con_prezzo_finale.json", json);
-
-            MessageBox.Show("Prodotto salvato con successo.");
         }
     }
 }

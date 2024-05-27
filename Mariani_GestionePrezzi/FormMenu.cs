@@ -1,21 +1,16 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Forms;
-using static Mariani_GestionePrezzi.GestioneMenu;
 using System.IO;
+using System.Linq;
+using System.Windows.Forms;
 
 namespace Mariani_GestionePrezzi
 {
     public partial class FormMenu : Form
     {
-        private GestioneMenu.Menu menu;
-        private List<Ingredient<string>> listaIngredienti;
+        private MyMenu menu;
+        private List<Ingredient> listaIngredienti;
 
         public FormMenu()
         {
@@ -24,9 +19,8 @@ namespace Mariani_GestionePrezzi
 
         private void FormMenu_Load(object sender, EventArgs e)
         {
-            menu = new GestioneMenu.Menu();
-            listaIngredienti = Ingredient<string>.DeserializzaDaJSON("magazzino.json");
-
+            menu = new MyMenu();
+            listaIngredienti = DeserializzaDaJSON("magazzino.json");
 
             // Popola il ComboBox con gli ingredienti disponibili
             foreach (var ingrediente in listaIngredienti)
@@ -39,12 +33,17 @@ namespace Mariani_GestionePrezzi
             dataGridView1.Columns.Add("Quantita", "Quantità");
         }
 
+        private List<Ingredient> DeserializzaDaJSON(string filePath)
+        {
+            string json = File.ReadAllText(filePath);
+            return JsonConvert.DeserializeObject<List<Ingredient>>(json);
+        }
+
         private void button1_Click(object sender, EventArgs e)
         {
             Product nuovoProdotto = new Product();
             nuovoProdotto.Name = textBox1.Text;
             nuovoProdotto.Price = decimal.Parse(textBox2.Text);
-
 
             // Aggiungi gli ingredienti selezionati con le rispettive quantità al nuovo prodotto
             foreach (DataGridViewRow riga in dataGridView1.Rows)
@@ -56,28 +55,26 @@ namespace Mariani_GestionePrezzi
 
                     if (quantita > 0)
                     {
-                        ProductIngredient ingredient = new ProductIngredient
+                        // Cerca l'ingrediente nella listaIngredienti per ottenere il prezzo
+                        var ingrediente = listaIngredienti.FirstOrDefault(i => i.Name == nomeIngrediente);
+                        if (ingrediente != null)
                         {
-                            IngredientName = nomeIngrediente,
-                            Quantity = quantita
-                        };
-
-                        nuovoProdotto.Ingredients.Add(ingredient);
+                            Ingredient ingredient = new Ingredient(ingrediente.Name, quantita, ingrediente.Price);
+                            nuovoProdotto.Ingredients.Add(ingredient);
+                        }
                     }
                 }
             }
 
-            // Aggiungi il nuovo prodotto al menu
-            menu.AddProduct(nuovoProdotto);
+            // Aggiungi il nuovo prodotto a una ricetta
+            Recipe recipe = new Recipe("Nuova Ricetta");
+            recipe.AddProduct(nuovoProdotto);
+
+            // Aggiungi la nuova ricetta al menu
+            menu.AddRecipe(recipe);
 
             // Salva il menu aggiornato su file JSON
             menu.SaveToFile("menu.json");
-
-            // Aggiorna la DataGridView dei prodotti nel form principale
-            //(Owner as FormPrincipale).CaricaProdotti();
-
-            // Chiudi il form corrente
-            //Close();
         }
 
         private void button2_Click(object sender, EventArgs e)
@@ -86,7 +83,7 @@ namespace Mariani_GestionePrezzi
             string nomeIngrediente = comboBox1.SelectedItem.ToString();
             int quantita = Convert.ToInt32(textBox2.Text);
 
-            if (quantita > 0)   
+            if (quantita > 0)
             {
                 dataGridView1.Rows.Add(nomeIngrediente, quantita);
             }
