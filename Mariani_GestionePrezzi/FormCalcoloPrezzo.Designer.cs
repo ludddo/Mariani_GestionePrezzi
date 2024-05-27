@@ -35,12 +35,13 @@
             this.buttonCalcolaPrezzo = new System.Windows.Forms.Button();
             this.labelPrezzoFinale = new System.Windows.Forms.Label();
             this.button1 = new System.Windows.Forms.Button();
+            this.label2 = new System.Windows.Forms.Label();
             this.SuspendLayout();
             // 
             // comboBoxProdotti
             // 
             this.comboBoxProdotti.FormattingEnabled = true;
-            this.comboBoxProdotti.Location = new System.Drawing.Point(138, 104);
+            this.comboBoxProdotti.Location = new System.Drawing.Point(117, 180);
             this.comboBoxProdotti.Name = "comboBoxProdotti";
             this.comboBoxProdotti.Size = new System.Drawing.Size(121, 21);
             this.comboBoxProdotti.TabIndex = 0;
@@ -49,7 +50,7 @@
             // 
             this.label1.AutoSize = true;
             this.label1.ForeColor = System.Drawing.Color.CornflowerBlue;
-            this.label1.Location = new System.Drawing.Point(138, 85);
+            this.label1.Location = new System.Drawing.Point(114, 164);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(96, 13);
             this.label1.TabIndex = 1;
@@ -57,16 +58,16 @@
             // 
             // textBox1
             // 
-            this.textBox1.Location = new System.Drawing.Point(299, 104);
+            this.textBox1.Location = new System.Drawing.Point(117, 239);
             this.textBox1.Name = "textBox1";
-            this.textBox1.Size = new System.Drawing.Size(100, 20);
+            this.textBox1.Size = new System.Drawing.Size(121, 20);
             this.textBox1.TabIndex = 2;
             // 
             // textBoxMargine
             // 
             this.textBoxMargine.AutoSize = true;
             this.textBoxMargine.ForeColor = System.Drawing.Color.Crimson;
-            this.textBoxMargine.Location = new System.Drawing.Point(299, 84);
+            this.textBoxMargine.Location = new System.Drawing.Point(114, 223);
             this.textBoxMargine.Name = "textBoxMargine";
             this.textBoxMargine.Size = new System.Drawing.Size(109, 13);
             this.textBoxMargine.TabIndex = 3;
@@ -74,7 +75,7 @@
             // 
             // buttonCalcolaPrezzo
             // 
-            this.buttonCalcolaPrezzo.Location = new System.Drawing.Point(138, 190);
+            this.buttonCalcolaPrezzo.Location = new System.Drawing.Point(117, 290);
             this.buttonCalcolaPrezzo.Name = "buttonCalcolaPrezzo";
             this.buttonCalcolaPrezzo.Size = new System.Drawing.Size(96, 31);
             this.buttonCalcolaPrezzo.TabIndex = 4;
@@ -87,7 +88,7 @@
             this.labelPrezzoFinale.AutoSize = true;
             this.labelPrezzoFinale.Font = new System.Drawing.Font("Microsoft Sans Serif", 27.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.labelPrezzoFinale.ForeColor = System.Drawing.SystemColors.ButtonFace;
-            this.labelPrezzoFinale.Location = new System.Drawing.Point(272, 294);
+            this.labelPrezzoFinale.Location = new System.Drawing.Point(437, 217);
             this.labelPrezzoFinale.Name = "labelPrezzoFinale";
             this.labelPrezzoFinale.Size = new System.Drawing.Size(247, 42);
             this.labelPrezzoFinale.TabIndex = 5;
@@ -95,13 +96,25 @@
             // 
             // button1
             // 
-            this.button1.Location = new System.Drawing.Point(367, 357);
+            this.button1.Location = new System.Drawing.Point(499, 285);
             this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(75, 23);
+            this.button1.Size = new System.Drawing.Size(126, 41);
             this.button1.TabIndex = 6;
             this.button1.Text = "Salva";
             this.button1.UseVisualStyleBackColor = true;
             this.button1.Click += new System.EventHandler(this.button1_Click);
+            // 
+            // label2
+            // 
+            this.label2.AutoSize = true;
+            this.label2.Font = new System.Drawing.Font("Microsoft Sans Serif", 48F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label2.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(238)))), ((int)(((byte)(238)))), ((int)(((byte)(238)))));
+            this.label2.Location = new System.Drawing.Point(223, 36);
+            this.label2.Margin = new System.Windows.Forms.Padding(0);
+            this.label2.Name = "label2";
+            this.label2.Size = new System.Drawing.Size(370, 73);
+            this.label2.TabIndex = 7;
+            this.label2.Text = "Brew Bucks";
             // 
             // FormCalcoloPrezzo
             // 
@@ -109,6 +122,7 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(34)))), ((int)(((byte)(40)))), ((int)(((byte)(49)))));
             this.ClientSize = new System.Drawing.Size(800, 450);
+            this.Controls.Add(this.label2);
             this.Controls.Add(this.button1);
             this.Controls.Add(this.labelPrezzoFinale);
             this.Controls.Add(this.buttonCalcolaPrezzo);
@@ -133,5 +147,6 @@
         private System.Windows.Forms.Button buttonCalcolaPrezzo;
         private System.Windows.Forms.Label labelPrezzoFinale;
         private System.Windows.Forms.Button button1;
+        private System.Windows.Forms.Label label2;
     }
 }

@@ -31,6 +31,17 @@ namespace Mariani_GestionePrezzi
             // Imposta la DataGridView per le selezioni degli ingredienti
             dataGridView1.Columns.Add("Ingrediente", "Ingrediente");
             dataGridView1.Columns.Add("Quantita", "Quantità");
+
+
+            string filePath = "menu.json";
+            if (File.Exists(filePath))
+            {
+                menu = MyMenu.LoadFromFile(filePath);
+            }
+            else
+            {
+                menu = new MyMenu();
+            }
         }
 
         private List<Ingredient> DeserializzaDaJSON(string filePath)
@@ -67,7 +78,7 @@ namespace Mariani_GestionePrezzi
             }
 
             // Aggiungi il nuovo prodotto a una ricetta
-            Recipe recipe = new Recipe("Nuova Ricetta");
+            Recipe recipe = new Recipe("Ricetta");
             recipe.AddProduct(nuovoProdotto);
 
             // Aggiungi la nuova ricetta al menu
