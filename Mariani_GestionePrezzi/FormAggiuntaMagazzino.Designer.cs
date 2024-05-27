@@ -108,7 +108,7 @@
             // button1
             // 
             this.button1.Font = new System.Drawing.Font("Microsoft Sans Serif", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.button1.Location = new System.Drawing.Point(277, 314);
+            this.button1.Location = new System.Drawing.Point(383, 285);
             this.button1.Name = "button1";
             this.button1.Size = new System.Drawing.Size(162, 63);
             this.button1.TabIndex = 8;
@@ -119,15 +119,15 @@
             // dataGridView1
             // 
             this.dataGridView1.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dataGridView1.Location = new System.Drawing.Point(472, 275);
+            this.dataGridView1.Location = new System.Drawing.Point(198, 387);
             this.dataGridView1.Name = "dataGridView1";
-            this.dataGridView1.Size = new System.Drawing.Size(240, 150);
+            this.dataGridView1.Size = new System.Drawing.Size(326, 199);
             this.dataGridView1.TabIndex = 9;
             // 
             // button2
             // 
             this.button2.Font = new System.Drawing.Font("Microsoft Sans Serif", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.button2.Location = new System.Drawing.Point(109, 314);
+            this.button2.Location = new System.Drawing.Point(171, 285);
             this.button2.Name = "button2";
             this.button2.Size = new System.Drawing.Size(162, 63);
             this.button2.TabIndex = 10;
@@ -151,7 +151,7 @@
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(34)))), ((int)(((byte)(40)))), ((int)(((byte)(49)))));
-            this.ClientSize = new System.Drawing.Size(724, 437);
+            this.ClientSize = new System.Drawing.Size(724, 629);
             this.Controls.Add(this.label5);
             this.Controls.Add(this.button2);
             this.Controls.Add(this.dataGridView1);

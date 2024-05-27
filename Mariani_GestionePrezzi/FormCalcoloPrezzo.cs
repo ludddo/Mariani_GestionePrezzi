@@ -11,11 +11,13 @@ namespace Mariani_GestionePrezzi
     {
         private MyMenu menu;
         private List<Ingredient> listaIngredienti;
+        private List<ProdottoConPrezzoFinale> prodottiConPrezzoFinale;
 
         public FormCalcoloPrezzo()
         {
             InitializeComponent();
             CaricaIngredienti();
+            CaricaProdottiConPrezzoFinale();
         }
 
         private void CaricaIngredienti()
@@ -23,6 +25,20 @@ namespace Mariani_GestionePrezzi
             // Carica la lista degli ingredienti dal file JSON
             string json = File.ReadAllText("magazzino.json");
             listaIngredienti = JsonConvert.DeserializeObject<List<Ingredient>>(json);
+        }
+
+        private void CaricaProdottiConPrezzoFinale()
+        {
+            string filePath = "prodottiConPrezzoFinale.json";
+            if (File.Exists(filePath))
+            {
+                string json = File.ReadAllText(filePath);
+                prodottiConPrezzoFinale = JsonConvert.DeserializeObject<List<ProdottoConPrezzoFinale>>(json);
+            }
+            else
+            {
+                prodottiConPrezzoFinale = new List<ProdottoConPrezzoFinale>();
+            }
         }
 
         private void FormCalcoloPrezzo_Load(object sender, EventArgs e)
@@ -110,7 +126,21 @@ namespace Mariani_GestionePrezzi
 
         private void button1_Click(object sender, EventArgs e)
         {
+            string nomeProdotto = comboBoxProdotti.SelectedItem.ToString();
+            decimal prezzoFinale = decimal.Parse(labelPrezzoFinale.Text.Replace("Prezzo finale: ", string.Empty).Replace("€", string.Empty));
 
+            ProdottoConPrezzoFinale prodottoConPrezzoFinale = new ProdottoConPrezzoFinale
+            {
+                Nome = nomeProdotto,
+                PrezzoFinale = prezzoFinale
+            };
+
+            prodottiConPrezzoFinale.Add(prodottoConPrezzoFinale);
+
+            string json = JsonConvert.SerializeObject(prodottiConPrezzoFinale, Formatting.Indented);
+            File.WriteAllText("prodottiConPrezzoFinale.json", json);
+
+            MessageBox.Show("Prodotto salvato con successo.");
         }
     }
 }

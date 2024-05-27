@@ -47,5 +47,11 @@ namespace Mariani_GestionePrezzi
 
             nuovoForm.Show();
         }
+
+        private void button4_Click(object sender, EventArgs e)
+        {
+            FormVisualizzatoreMenu formVisualizzaProdotti = new FormVisualizzatoreMenu();
+            formVisualizzaProdotti.Show();
+        }
     }
 }
