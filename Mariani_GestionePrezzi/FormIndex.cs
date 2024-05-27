@@ -21,7 +21,6 @@ namespace Mariani_GestionePrezzi
 
         private void Form1_Load(object sender, EventArgs e)
         {
-            // Se il file JSON non esiste, crea un file vuoto
             if (!File.Exists("magazzino.json"))
             {
                 File.WriteAllText("magazzino.json", "[]");

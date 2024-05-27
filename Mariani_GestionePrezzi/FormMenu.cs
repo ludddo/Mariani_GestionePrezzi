@@ -75,6 +75,12 @@ namespace Mariani_GestionePrezzi
 
             // Salva il menu aggiornato su file JSON
             menu.SaveToFile("menu.json");
+
+            MessageBox.Show("Prodotto aggiunto con successo!", "Brew Bucks");
+            textBox1.Clear();
+            textBox2.Clear();
+            comboBox1.Text = string.Empty;
+            dataGridView1.Rows.Clear();
         }
 
         private void button2_Click(object sender, EventArgs e)
