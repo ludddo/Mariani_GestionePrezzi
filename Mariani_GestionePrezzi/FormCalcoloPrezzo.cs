@@ -9,10 +9,14 @@ namespace Mariani_GestionePrezzi
 {
     public partial class FormCalcoloPrezzo : Form
     {
+        // Variabile per memorizzare il menu
         private MyMenu menu;
+        // Lista di ingredienti caricati dal file JSON
         private List<Ingredient> listaIngredienti;
+        // Lista di prodotti con i prezzi finali calcolati
         private List<ProdottoConPrezzoFinale> prodottiConPrezzoFinale;
 
+        // Costruttore della form
         public FormCalcoloPrezzo()
         {
             InitializeComponent();
@@ -20,16 +24,19 @@ namespace Mariani_GestionePrezzi
             CaricaProdottiConPrezzoFinale();
         }
 
+        // Metodo per caricare gli ingredienti dal file JSON
         private void CaricaIngredienti()
         {
-            // Carica la lista degli ingredienti dal file JSON
+            // Legge il contenuto del file JSON e deserializza in una lista di Ingredient
             string json = File.ReadAllText("magazzino.json");
             listaIngredienti = JsonConvert.DeserializeObject<List<Ingredient>>(json);
         }
 
+        // Metodo per caricare i prodotti con i prezzi finali dal file JSON
         private void CaricaProdottiConPrezzoFinale()
         {
             string filePath = "prodottiConPrezzoFinale.json";
+            // Se il file esiste, legge il contenuto e deserializza in una lista di ProdottoConPrezzoFinale
             if (File.Exists(filePath))
             {
                 string json = File.ReadAllText(filePath);
@@ -37,10 +44,12 @@ namespace Mariani_GestionePrezzi
             }
             else
             {
+                // Se il file non esiste, inizializza una lista vuota
                 prodottiConPrezzoFinale = new List<ProdottoConPrezzoFinale>();
             }
         }
 
+        // Evento che si verifica quando la form viene caricata
         private void FormCalcoloPrezzo_Load(object sender, EventArgs e)
         {
             // Carica il menu dal file JSON
@@ -56,6 +65,7 @@ namespace Mariani_GestionePrezzi
             }
         }
 
+        // Evento che si verifica quando il bottone per calcolare il prezzo viene cliccato
         private void buttonCalcolaPrezzo_Click_1(object sender, EventArgs e)
         {
             // Verifica che un prodotto sia selezionato
@@ -99,6 +109,7 @@ namespace Mariani_GestionePrezzi
                 }
             }
 
+            // Se il prodotto non viene trovato, mostra un messaggio di errore
             if (prodotto == null)
             {
                 MessageBox.Show("Prodotto non trovato.");
@@ -109,12 +120,12 @@ namespace Mariani_GestionePrezzi
             decimal costoTotale = 0;
             foreach (var ingrediente in prodotto.Ingredients)
             {
+                // Trova l'ingrediente nella lista degli ingredienti caricati
                 var ingredientInfo = listaIngredienti.FirstOrDefault(i => i.Name == ingrediente.Name);
                 if (ingredientInfo != null)
                 {
                     // Calcola il costo proporzionale dell'ingrediente
                     decimal costoIngrediente = ingredientInfo.Price * (ingrediente.Quantity / (decimal)ingredientInfo.Quantity);
-
                     costoTotale += costoIngrediente;
                 }
             }
@@ -124,31 +135,37 @@ namespace Mariani_GestionePrezzi
             labelPrezzoFinale.Text = $"Prezzo finale: {prezzoFinale:C}";
         }
 
+        // Evento che si verifica quando il bottone per salvare il prezzo finale viene cliccato
         private void button1_Click(object sender, EventArgs e)
         {
+            // Legge il nome del prodotto selezionato
             string nomeProdotto = comboBoxProdotti.SelectedItem.ToString();
+            // Estrae il prezzo finale dal label
             decimal prezzoFinale = decimal.Parse(labelPrezzoFinale.Text.Replace("Prezzo finale: ", string.Empty).Replace("€", string.Empty));
 
+            // Crea un nuovo oggetto ProdottoConPrezzoFinale
             ProdottoConPrezzoFinale prodottoConPrezzoFinale = new ProdottoConPrezzoFinale
             {
                 Nome = nomeProdotto,
                 PrezzoFinale = prezzoFinale
             };
 
+            // Aggiunge il prodotto con il prezzo finale alla lista
             prodottiConPrezzoFinale.Add(prodottoConPrezzoFinale);
 
+            // Serializza la lista aggiornata in JSON e la scrive nel file
             string json = JsonConvert.SerializeObject(prodottiConPrezzoFinale, Formatting.Indented);
             File.WriteAllText("prodottiConPrezzoFinale.json", json);
 
+            // Mostra un messaggio di conferma
             MessageBox.Show("Prodotto salvato con successo.");
         }
     }
 }
 
-
+// Classe per rappresentare un prodotto con il prezzo finale
 public class ProdottoConPrezzoFinale
 {
-    public string Nome { get; set; }
-    public decimal PrezzoFinale { get; set; }
+    public string Nome { get; set; } // Nome del prodotto
+    public decimal PrezzoFinale { get; set; } // Prezzo finale del prodotto
 }
-
